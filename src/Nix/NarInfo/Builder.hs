@@ -39,7 +39,8 @@ buildNarInfo' filepath string (NarInfo{..}) =
   -- XXX: strip prefixes?
   <> key'    "References"  (mconcat
       $ Data.List.intersperse " "
-        $ map filepath $ Data.Set.toList references)
+        $ map filepath
+          $ Data.List.sort $ Data.Set.toList references)
 
   <> optKey  "Deriver"     deriver
   <> optKey  "System"      system
