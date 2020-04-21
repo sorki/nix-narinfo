@@ -15,7 +15,12 @@ import Data.Swagger (ToSchema)
 import GHC.Generics
 
 -- NarInfo URL includes storePath hash and .narinfo suffix
--- XXX: storePath is with prefix but references are shortRefs (without prefix)
+-- Note: storePath is with prefix but references are shortRefs (without /nix/store prefix)
+--
+-- Both `parseNarInfoWith` and `buildNarInfoWith` need
+-- a path parser/printer which takes an argument
+-- whether the path is prefixed or not.
+--
 data NarInfo fp txt hash = NarInfo
   { -- | Absolute path of the derivation in nix store.
     storePath   :: fp

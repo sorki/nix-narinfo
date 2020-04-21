@@ -4,7 +4,7 @@
 module Nix.NarInfo.Parser
   ( -- * Parser
     parseNarInfo
-  , parseNarInfo'
+  , parseNarInfoWith
   ) where
 
 import Data.Set (Set)
@@ -19,18 +19,18 @@ import qualified Data.Text
 import qualified Data.Attoparsec.Text
 
 parseNarInfo :: Parser (NarInfo FilePath Text Text)
-parseNarInfo = parseNarInfo' pathParse textParse hashParse
+parseNarInfo = parseNarInfoWith pathParse textParse hashParse
+  where
+    textParse = Data.Attoparsec.Text.takeWhile (not . Data.Char.isSpace)
+    pathParse _hasPrefix = Data.Text.unpack <$> textParse
+    hashParse = textParse
 
-textParse = Data.Attoparsec.Text.takeWhile (not . Data.Char.isSpace)
-pathParse = Data.Text.unpack <$> textParse
-hashParse = textParse
-
-parseNarInfo' :: (Ord fp)
-              => Parser fp
-              -> Parser txt
-              -> Parser hash
-              -> Parser (NarInfo fp txt hash)
-parseNarInfo' pathParser textParser hashParser = do
+parseNarInfoWith :: (Ord fp)
+                 => (Bool -> Parser fp) -- True when path prefix is present
+                 -> Parser txt
+                 -> Parser hash
+                 -> Parser (NarInfo fp txt hash)
+parseNarInfoWith pathParser textParser hashParser = do
   storePath   <- keyPath "StorePath"
   url         <- key     "URL"
   compression <- key     "Compression"
@@ -38,9 +38,9 @@ parseNarInfo' pathParser textParser hashParser = do
   fileSize    <- keyNum  "FileSize"
   narHash     <- keyHash "NarHash"
   narSize     <- keyNum  "NarSize"
-  -- XXX add prefix for these (the same as storePath I hope)
+
   references  <- Data.Set.fromList <$> (parseKey "References" $
-    pathParser `Data.Attoparsec.Text.sepBy` Data.Attoparsec.Text.char ' ')
+    (pathParser False) `Data.Attoparsec.Text.sepBy` Data.Attoparsec.Text.char ' ')
 
   deriver     <- optKey "Deriver"
   system      <- optKey "System"
@@ -59,5 +59,5 @@ parseNarInfo' pathParser textParser hashParser = do
     key = flip parseKey textParser
     optKey = Control.Applicative.optional . key
     keyNum x = parseKey x Data.Attoparsec.Text.decimal
-    keyPath x = parseKey x pathParser
+    keyPath x = parseKey x (pathParser True)
     keyHash x = parseKey x hashParser
