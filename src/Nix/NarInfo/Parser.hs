@@ -18,20 +18,25 @@ import qualified Data.Set
 import qualified Data.Text
 import qualified Data.Attoparsec.Text
 
-parseNarInfo :: Parser (NarInfo FilePath Text)
-parseNarInfo = parseNarInfo' pathParse textParse
+parseNarInfo :: Parser (NarInfo FilePath Text Text)
+parseNarInfo = parseNarInfo' pathParse textParse hashParse
 
 textParse = Data.Attoparsec.Text.takeWhile (not . Data.Char.isSpace)
 pathParse = Data.Text.unpack <$> textParse
+hashParse = textParse
 
-parseNarInfo' :: (Ord fp) => Parser fp -> Parser txt -> Parser (NarInfo fp txt)
-parseNarInfo' pathParser textParser = do
+parseNarInfo' :: (Ord fp)
+              => Parser fp
+              -> Parser txt
+              -> Parser hash
+              -> Parser (NarInfo fp txt hash)
+parseNarInfo' pathParser textParser hashParser = do
   storePath   <- keyPath "StorePath"
   url         <- key     "URL"
   compression <- key     "Compression"
-  fileHash    <- key     "FileHash"
+  fileHash    <- keyHash "FileHash"
   fileSize    <- keyNum  "FileSize"
-  narHash     <- key     "NarHash"
+  narHash     <- keyHash "NarHash"
   narSize     <- keyNum  "NarSize"
   -- XXX add prefix for these (the same as storePath I hope)
   references  <- Data.Set.fromList <$> (parseKey "References" $
@@ -55,3 +60,4 @@ parseNarInfo' pathParser textParser = do
     optKey = Control.Applicative.optional . key
     keyNum x = parseKey x Data.Attoparsec.Text.decimal
     keyPath x = parseKey x pathParser
+    keyHash x = parseKey x hashParser

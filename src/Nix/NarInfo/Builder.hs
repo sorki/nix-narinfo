@@ -22,18 +22,21 @@ import qualified Data.Text.Lazy.Builder
 buildNarInfo = buildNarInfo'
   Data.Text.Lazy.Builder.fromString
   Data.Text.Lazy.Builder.fromText
+  Data.Text.Lazy.Builder.fromText
 
-buildNarInfo' :: (fp -> Builder)
-             -> (txt -> Builder)
-             -> NarInfo fp txt
-             -> Builder
-buildNarInfo' filepath string (NarInfo{..}) =
+buildNarInfo' :: (Ord fp)
+              => (fp -> Builder)
+              -> (txt -> Builder)
+              -> (hash -> Builder)
+              -> NarInfo fp txt hash
+              -> Builder
+buildNarInfo' filepath string hash (NarInfo{..}) =
      keyPath "StorePath"   storePath
   <> key     "URL"         url
   <> key     "Compression" compression
-  <> key     "FileHash"    fileHash
+  <> keyHash "FileHash"    fileHash
   <> keyNum  "FileSize"    fileSize
-  <> key     "NarHash"     narHash
+  <> keyHash "NarHash"     narHash
   <> keyNum  "NarSize"     narSize
 
   -- XXX: strip prefixes?
@@ -51,4 +54,5 @@ buildNarInfo' filepath string (NarInfo{..}) =
     key k v     = key' k (string v)
     keyNum k v  = key' k (Data.Text.Lazy.Builder.fromString . show $ v)
     keyPath k v = key' k (filepath v)
+    keyHash k v = key' k (hash v)
     optKey k    = maybe mempty (key k)

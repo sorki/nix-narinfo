@@ -1,9 +1,11 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE DeriveAnyClass    #-}
 
+
 module Nix.NarInfo.Types
     ( -- * Types
       NarInfo(..)
+    , SimpleNarInfo
     ) where
 
 import Data.Set (Set)
@@ -14,7 +16,7 @@ import GHC.Generics
 
 -- NarInfo URL includes storePath hash and .narinfo suffix
 -- XXX: storePath is with prefix but references are shortRefs (without prefix)
-data NarInfo fp txt = NarInfo
+data NarInfo fp txt hash = NarInfo
   { -- | Absolute path of the derivation in nix store.
     storePath   :: fp
   , -- | Relative url (to current domain) to download nar file.
@@ -23,15 +25,17 @@ data NarInfo fp txt = NarInfo
     compression :: txt
   , -- | Hash of the compressed nar file.
     -- NOTE: to compute use "nix-hash --type sha256 --flat"
-    -- (srk) this isn't fixed to sha256 e.g.: sha256:1a6lzf...
-    fileHash    :: txt
+    -- (srk) this isn't fixed to sha256 but a prefix indicates the type e.g.: sha256:1a6lzf...
+    -- default is sha256 thought
+    fileHash    :: hash
   , -- | File size of compressed nar file.
     -- NOTE: du -b
     fileSize    :: Integer
   , -- | Hash of the decompressed nar file.
     -- NOTE: to compute use "nix-hash --type sha256 --flat --base32"
-    -- (srk) this isn't fixed to sha256 e.g.: sha256:1a6lzf...
-    narHash     :: txt
+    -- (srk) this isn't fixed to sha256 but a prefix indicates the type e.g.: sha256:1a6lzf...
+    -- default is sha256 thought
+    narHash     :: hash
   , -- | File size of decompressed nar file.
     -- NOTE: du -b
     narSize     :: Integer
@@ -53,11 +57,20 @@ data NarInfo fp txt = NarInfo
   }
   deriving (Generic, Show)
 
+type SimpleNarInfo = NarInfo FilePath Text Text
+
 -- {-# LANGUAGE StandaloneDeriving #-}
--- {-# LANGUAGE FlexibleInstances #-}
+-- {-# LANGUAGE FlexibleInstances  #-}
 --
--- deriving instance ToSchema (NarInfo FilePath Text)
--- deriving instance FromJSON (NarInfo FilePath Text)
--- deriving instance ToJSON   (NarInfo FilePath Text)
+-- deriving instance ToSchema (NarInfo FilePath Text Text)
+-- deriving instance FromJSON (NarInfo FilePath Text Text)
+-- deriving instance ToJSON   (NarInfo FilePath Text Text)
 --
 -- for Domen ^^
+--
+-- synomym variant
+-- {-# LANGUAGE StandaloneDeriving   #-}
+-- {-# LANGUAGE TypeSynonymInstances #-}
+-- {-# LANGUAGE FlexibleInstances    #-}
+-- deriving instance ToSchema SimpleNarInfo
+-- ...
