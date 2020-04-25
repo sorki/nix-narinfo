@@ -60,7 +60,7 @@ data NarInfo fp txt hash = NarInfo
     -- the "name" part of the path.
     ca          :: Maybe txt
   }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 type SimpleNarInfo = NarInfo FilePath Text Text
 
