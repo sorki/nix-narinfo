@@ -10,8 +10,6 @@ module Nix.NarInfo.Types
 
 import Data.Set (Set)
 import Data.Text (Text)
-import Data.Aeson (FromJSON, ToJSON)
-import Data.Swagger (ToSchema)
 import GHC.Generics
 
 -- NarInfo URL includes storePath hash and .narinfo suffix
