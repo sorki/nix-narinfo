@@ -63,19 +63,3 @@ data NarInfo fp txt hash = NarInfo
   deriving (Eq, Generic, Show)
 
 type SimpleNarInfo = NarInfo FilePath Text Text
-
--- {-# LANGUAGE StandaloneDeriving #-}
--- {-# LANGUAGE FlexibleInstances  #-}
---
--- deriving instance ToSchema (NarInfo FilePath Text Text)
--- deriving instance FromJSON (NarInfo FilePath Text Text)
--- deriving instance ToJSON   (NarInfo FilePath Text Text)
---
--- for Domen ^^
---
--- synomym variant
--- {-# LANGUAGE StandaloneDeriving   #-}
--- {-# LANGUAGE TypeSynonymInstances #-}
--- {-# LANGUAGE FlexibleInstances    #-}
--- deriving instance ToSchema SimpleNarInfo
--- ...
