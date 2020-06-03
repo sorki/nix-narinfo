@@ -1,5 +1,5 @@
 name:                nix-narinfo
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Parse and render .narinfo files
 description:         Support for parsing and rendering Nix .narinfo files
 homepage:            https://github.com/sorki/nix-narinfo
