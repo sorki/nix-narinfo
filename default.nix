@@ -1,2 +1,6 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc883" }:
-nixpkgs.haskell.lib.buildFromSdist (nixpkgs.haskell.packages.${compiler}.callCabal2nix "nix-narinfo" ./. { })
+{ pkgs ? import <nixpkgs> {} }:
+let
+  src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
+in
+  pkgs.haskell.lib.buildFromSdist
+    (pkgs.haskellPackages.callCabal2nix "nix-narinfo" src { })
