@@ -1,5 +1,5 @@
 name:                nix-narinfo
-version:             0.1.0.1
+version:             0.1.0.2
 synopsis:            Parse and render .narinfo files
 description:         Support for parsing and rendering Nix .narinfo files
 homepage:            https://github.com/sorki/nix-narinfo
@@ -13,6 +13,7 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 extra-source-files:
+    CHANGELOG.md
     README.md
     test/samples/0
     test/samples/guix0
