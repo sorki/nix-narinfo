@@ -21,7 +21,7 @@ import qualified Data.Attoparsec.Text
 parseNarInfo :: Parser (NarInfo FilePath Text Text)
 parseNarInfo = parseNarInfoWith pathParse textParse hashParse
   where
-    textParse = Data.Attoparsec.Text.takeWhile (not . Data.Char.isSpace)
+    textParse = Data.Attoparsec.Text.takeWhile1 (not . Data.Char.isSpace)
     pathParse _hasPrefix = Data.Text.unpack <$> textParse
     hashParse = textParse
 
