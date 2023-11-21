@@ -16,6 +16,7 @@ extra-source-files:
     CHANGELOG.md
     README.md
     test/samples/0
+    test/samples/1
     test/samples/guix0
 
 library
