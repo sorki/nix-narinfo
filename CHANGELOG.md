@@ -1,3 +1,7 @@
+# Version [0.1.1.1](https://github.com/sorki/nix-narinfo/compare/0.1.1.0...0.1.1.1) (2024-03-07)
+
+* Make `pretty-narinfo` actually usable (accepting input file path)
+
 # Version [0.1.1.0](https://github.com/sorki/nix-narinfo/compare/0.1.0.2...0.1.1.0) (2023-11-21)
 
 * Fixed parsing of empty references [#4](https://github.com/sorki/nix-narinfo/pull/4)
