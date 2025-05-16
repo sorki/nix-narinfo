@@ -3,11 +3,11 @@
 
 module ParseSpec where
 
-import Data.Attoparsec.Text
-import Data.Text.IO
-import Data.Text.Lazy
-import Data.Text.Lazy.Builder
-import Data.Text.Lazy.IO
+import qualified Data.Attoparsec.Text
+import qualified Data.Text.IO
+import qualified Data.Text.Lazy
+import qualified Data.Text.Lazy.Builder
+import qualified Data.Text.Lazy.IO
 
 import SpecHelper
 
