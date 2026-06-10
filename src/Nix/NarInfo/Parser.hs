@@ -45,7 +45,7 @@ parseNarInfoWith pathParser textParser hashParser = do
   deriver     <- optKey "Deriver"
   system      <- optKey "System"
   sig         <- optKey "Sig"
-  ca          <- optKey "Ca"
+  ca          <- optKey "CA"
 
   return $ NarInfo {..}
   where

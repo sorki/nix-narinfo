@@ -1,3 +1,8 @@
+# Version [0.1.1.3](https://github.com/sorki/nix-narinfo/compare/0.1.1.2...0.1.1.3)
+
+* Render and parse the content-address field as `CA:` to match Nix's
+  case-sensitive narinfo key (was `Ca:`, which Nix silently ignored)
+
 # Version [0.1.1.2](https://github.com/sorki/nix-narinfo/compare/0.1.1.1...0.1.1.2) (2025-05-16)
 
 * Fix testsuite build for GHC 9.10.2 [#9](https://github.com/sorki/nix-narinfo/pull/9)
