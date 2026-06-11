@@ -1,4 +1,4 @@
-# Version [0.1.1.3](https://github.com/sorki/nix-narinfo/compare/0.1.1.2...0.1.1.3)
+# Version [0.1.1.3](https://github.com/sorki/nix-narinfo/compare/0.1.1.2...0.1.1.3) (2026-06-11)
 
 * Render and parse the content-address field as `CA:` to match Nix's
   case-sensitive narinfo key (was `Ca:`, which Nix silently ignored)
