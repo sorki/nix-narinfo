@@ -48,7 +48,7 @@ buildNarInfoWith filepath string hash (NarInfo{..}) =
   <> optKey  "Deriver"     deriver
   <> optKey  "System"      system
   <> optKey  "Sig"         sig
-  <> optKey  "Ca"          ca
+  <> optKey  "CA"          ca
   where
     key' k v    = k <> ": " <> v <> "\n"
     key k v     = key' k (string v)
